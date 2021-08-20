@@ -1,3 +1,4 @@
+pub mod channel;
 pub mod iter_flatten;
 pub mod pointers;
 pub mod str_split;
