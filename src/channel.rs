@@ -100,7 +100,7 @@ pub fn channel<T>() -> (Sender<T>, Receiver<T>) {
             shared: shared.clone(),
         },
         Receiver {
-            shared: shared.clone(),
+            shared,
             buffer: VecDeque::new(),
         },
     )

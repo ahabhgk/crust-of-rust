@@ -51,7 +51,7 @@ impl<T> Drop for Rc<T> {
         let inner = unsafe { self.inner.as_ref() };
         let count = inner.refcount.get();
         if count == 1 {
-            drop(inner);
+            // drop(inner);
             let _ = unsafe { Box::from_raw(self.inner.as_ptr()) };
         } else {
             inner.refcount.set(count - 1);
