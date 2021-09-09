@@ -54,6 +54,12 @@ impl<T> RawVec<T> {
     }
 }
 
+impl<T> Default for RawVec<T> {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl<T> Drop for RawVec<T> {
     fn drop(&mut self) {
         let elem_size = mem::size_of::<T>();
@@ -144,6 +150,12 @@ impl<T> Vec<T> {
     }
 }
 
+impl<T> Default for Vec<T> {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl<T> Deref for Vec<T> {
     type Target = [T];
 
@@ -173,7 +185,7 @@ impl<T> RawValIter<T> {
             start: slice.as_ptr(),
             end: if mem::size_of::<T>() == 0 {
                 ((slice.as_ptr() as usize) + slice.len()) as *const _
-            } else if slice.len() == 0 {
+            } else if slice.is_empty() {
                 // if `len = 0`, then this is not actually allocated memory.
                 // Need to avoid offsetting because that will give wrong
                 // information to LLVM via GEP.
@@ -258,8 +270,11 @@ impl<T> Drop for IntoIter<T> {
     }
 }
 
-impl<T> Vec<T> {
-    pub fn into_iter(self) -> IntoIter<T> {
+impl<T> IntoIterator for Vec<T> {
+    type Item = T;
+    type IntoIter = IntoIter<T>;
+
+    fn into_iter(self) -> Self::IntoIter {
         unsafe {
             let iter = RawValIter::new(&self);
             let buf = ptr::read(&self.buf);
@@ -300,7 +315,7 @@ impl<'a, T> Drop for Drain<'a, T> {
 impl<T> Vec<T> {
     pub fn drain(&mut self) -> Drain<T> {
         unsafe {
-            let iter = RawValIter::new(&self);
+            let iter = RawValIter::new(self);
 
             // this is a mem::forget safety thing. If Drain is forgotten, we just
             // leak the whole Vec's contents. Also we need to do this *eventually*
