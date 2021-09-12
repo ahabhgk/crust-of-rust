@@ -5,4 +5,5 @@ pub mod pointers;
 pub mod sort;
 pub mod str_split;
 pub mod strtok;
+pub mod trait_obj;
 pub mod vec_macro;
