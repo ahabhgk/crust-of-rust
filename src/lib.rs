@@ -1,5 +1,6 @@
 pub mod channel;
 pub mod dropck;
+pub mod future;
 pub mod iter_flatten;
 pub mod pointers;
 pub mod sort;

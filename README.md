@@ -1,3 +1,3 @@
 # crust-of-rust
 
-Learn [crust of rust](https://www.youtube.com/playlist?list=PLqbS7AVVErFiWDOAVrPt7aYmnuuOLYvOa).
+Notes of [crust of rust](https://www.youtube.com/playlist?list=PLqbS7AVVErFiWDOAVrPt7aYmnuuOLYvOa), and some of other tutorial.
