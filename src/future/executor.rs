@@ -23,6 +23,8 @@ pub struct Spawner {
 
 struct Task {
     future: Mutex<Option<BoxFuture<'static, ()>>>,
+    // Sender is !Sync, ArcWake requires Task to be Send + Sync,
+    // Task needs to be sendable across threads
     task_sender: SyncSender<Arc<Task>>,
 }
 
@@ -33,6 +35,8 @@ pub fn new_executor_and_spawner() -> (Executor, Spawner) {
 }
 
 impl Spawner {
+    // compiler doesn't kown how long the future will live,
+    // so we use 'static to mark it live forever to gerentee it will live long enough.
     pub fn spawn(&self, future: impl Future<Output = ()> + 'static + Send) {
         let future = future.boxed();
         let task = Arc::new(Task {
