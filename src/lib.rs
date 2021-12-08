@@ -1,4 +1,5 @@
 pub mod channel;
+pub mod closures;
 pub mod dropck;
 pub mod future;
 pub mod iter_flatten;
